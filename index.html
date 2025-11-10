@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Runner Profile - Global Runners Reference</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- START: Tailwind Configuration (MUST be in a <script> block) -->
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    // Using direct hex codes in the JS config
+                    'runner-maroon': '#800000',
+                    'runner-green': '#008000',
+                    'runner-gold': '#FFD700',
+                    'reference-bg': '#f7f7f7',
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    }
+    </script>
+    <!-- END: Tailwind Configuration -->
+
+    <style>
+        /* Custom styles and CSS variable definitions (for use in CSS selectors only) */
+        :root {
+            /* Define CSS variables for use in standard CSS blocks like race-card border */
+            --runner-maroon: #800000;
+            --runner-green: #008000;
+            --runner-gold: #FFD700;
+            --reference-bg: #f7f7f7;
+        }
+
+        body {
+            background-color: var(--reference-bg);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Style for data density in the race grid */
+        .race-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            /* Using CSS variable here is correct for standard CSS */
+            border-left: 5px solid var(--runner-maroon);
+        }
+        .race-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Custom scrollbar for desktop look */
+        .scrolling-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .scrolling-container::-webkit-scrollbar-thumb {
+            background: #d1d5db; /* gray-300 */
+            border-radius: 4px;
+        }
+        .scrolling-container::-webkit-scrollbar-track {
+            background: #f3f4f6; /* gray-100 */
+            }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Primary Header (Maroon Bar) -->
+    <header class="bg-runner-maroon shadow-lg text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <!-- Logo/Site Title (Globe with Track Ring SVG) -->
+            <a href="#" class="flex items-center space-x-2 text-xl font-extrabold tracking-wider">
+                <div class="relative w-6 h-6">
+                    <!-- Globe (Green) -->
+                    <svg class="w-6 h-6 text-runner-green" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                    </svg>
+                    <!-- Track Ring (Gold - Saturn Ring Effect) -->
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-12 h-2 rounded-full border-2 border-runner-gold transform rotate-45 -translate-y-1 opacity-80"></div>
+                        <div class="w-12 h-2 rounded-full border-2 border-runner-gold transform -rotate-45 translate-y-1 opacity-80"></div>
+                    </div>
+                </div>
+                <span class="text-white">Global Runners</span> <span class="text-runner-gold">Reference</span>
+            </a>
+
+            <!-- Compare Button (Top Right) -->
+            <button onclick="document.getElementById('compare-modal').classList.remove('hidden')" class="bg-runner-green hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg text-sm transition duration-150 shadow-md">
+                Compare Runners
+            </button>
+        </div>
+    </header>
+
+    <!-- Sub-Navigation (For Profile Details) -->
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-6 h-10 items-center overflow-x-auto scrolling-container">
+            <a href="#" class="text-sm font-semibold text-runner-maroon border-b-2 border-runner-maroon pb-1 -mb-px">Profile</a>
+            <a href="#" class="text-sm font-medium text-gray-700 hover:text-runner-maroon transition duration-150 pb-1">All Stats</a>
+            <a href="#" class="text-sm font-medium text-gray-700 hover:text-runner-maroon transition duration-150 pb-1">PBs & Records</a>
+            <a href="#" class="text-sm font-medium text-gray-700 hover:text-runner-maroon transition duration-150 pb-1">Splits Analysis</a>
+            <a href="#" class="text-sm font-medium text-gray-700 hover:text-runner-maroon transition duration-150 pb-1">Media Log</a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Profile Header Section (Image, Info, Badges) -->
+        <div class="bg-white rounded-xl shadow-xl p-6 mb-8 border-t-4 border-runner-maroon">
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+                <!-- 1. Profile Image & Primary Info (Col 1/4) -->
+                <div class="md:col-span-1 flex flex-col items-center md:items-start text-center md:text-left">
+                    <img src="https://placehold.co/150x150/800000/FFFFFF/png?text=Runner+Image" 
+                         onerror="this.onerror=null;this.src='https://placehold.co/150x150/9CA3AF/FFFFFF?text=No+Photo'"
+                         class="w-36 h-36 object-cover rounded-full border-4 border-gray-200 shadow-md mb-4"/>
+                    
+                    <h1 class="text-3xl font-extrabold text-gray-900 flex items-center">
+                        Jane Doe 
+                        <!-- Verification Icon (Shoe) -->
+                        <span class="ml-2" title="Verified Professional Athlete">
+                            <svg class="w-6 h-6 text-runner-gold" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18.8 11.2C17.7 7.7 15.6 5 12 5H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h8c3.6 0 5.7-2.7 6.8-6.2.11-.37.11-.77 0-1.18zm-6.8 4.8H5V7h7c2.2 0 3.9 1.5 4.8 4-.9 2.5-2.6 4-4.8 4zM16 11c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2z"/>
+                            </svg>
+                        </span>
+                    </h1>
+                    <p class="text-lg text-gray-600">Location: London, UK</p>
+                    <p class="text-sm text-gray-500 mt-1">Member since: 2018</p>
+                    
+                    <button onclick="document.getElementById('compare-modal').classList.remove('hidden')" class="mt-4 bg-runner-green hover:bg-green-700 text-white text-sm font-semibold py-2 px-4 rounded-lg transition duration-150 shadow-sm">
+                        Compare to Jane
+                    </button>
+                </div>
+
+                <!-- 2. Achievement Badges (Col 2-4) -->
+                <div class="md:col-span-3">
+                    <h2 class="text-xl font-bold text-runner-maroon mb-3 border-b pb-1">Career Achievements</h2>
+                    <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+                        <!-- Badge 1: World Marathon Majors -->
+                        <div class="flex flex-col items-center p-3 bg-gray-50 rounded-lg shadow-sm w-24 text-center">
+                            <svg class="w-8 h-8 text-runner-maroon mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-8.79V7h2v4.21l2.39 2.39-.71.71L11 11.21z"/></svg>
+                            <p class="text-2xl font-extrabold text-runner-gold">6</p>
+                            <p class="text-xs text-gray-600 font-medium">Majors Completed</p>
+                        </div>
+                        <!-- Badge 2: Sub-3 Hour Marathon -->
+                        <div class="flex flex-col items-center p-3 bg-gray-50 rounded-lg shadow-sm w-24 text-center">
+                            <svg class="w-8 h-8 text-runner-maroon mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.37 0-.71-.24-.85-.6L14.43 5.5l1.09-1.09c1.07 1.13 1.77 2.65 1.77 4.59zm-2.73 13.56L14.43 20c.32-.42.57-.88.75-1.37h2.74c-.49 1.44-1.4 2.66-2.61 3.53zm-3.69-1.28c-1.42 0-2.83-.35-4.1-.98L5.75 19.4c1.1 1.09 2.5 1.74 4.14 1.74 1.83 0 3.32-.87 4.14-1.97l-1.44-1.44c-.38.1-.78.18-1.19.23zm3.12-2.11l-3.21-3.21.71-.71 3.21 3.21c-.34.34-.68.68-1.12.71zm-7.66-5.55c.78-.34 1.63-.52 2.53-.52h.02c.98 0 1.9.22 2.7.63l1.83-1.83c-1.1-1.09-2.5-1.74-4.14-1.74-1.83 0-3.32.87-4.14 1.97l1.44 1.44zM4 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2z"/></svg>
+                            <p class="text-2xl font-extrabold text-runner-maroon">5x</p>
+                            <p class="text-xs text-gray-600 font-medium">Sub-3:00 Marathon</p>
+                        </div>
+                         <!-- Badge 3: 100 Mile Finisher -->
+                        <div class="flex flex-col items-center p-3 bg-gray-50 rounded-lg shadow-sm w-24 text-center">
+                            <svg class="w-8 h-8 text-runner-maroon mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0-9 9c0 4.97 4.03 9 9 9s9-4.03 9-9c0-4.97-4.03-9-9-9zm4.27 10.3c.09.28.16.57.16.89 0 2.2-1.79 4-4 4s-4-1.8-4-4c0-.32.07-.6.16-.89.28.8.53 1.62.77 2.45l-1.98.56c-.36-1.29-.63-2.64-.8-4.04H7V8h2.61c.17-1.4.44-2.75.8-4.04l1.98.56c-.24.83-.49 1.65-.77 2.45-.09.28-.16.57-.16.89 0 2.2 1.79 4 4 4s4-1.8 4-4c0-.32-.07-.6-.16-.89-.28-.8-.53-1.62-.77-2.45l1.98-.56c.36 1.29.63 2.64.8 4.04H17v3h-2.61c-.17 1.4-.44 2.75-.8 4.04l-1.98-.56c.24-.83.49-1.65.77-2.45z"/></svg>
+                            <p class="text-2xl font-extrabold text-runner-maroon">3</p>
+                            <p class="text-xs text-gray-600 font-medium">100 Mi Ultra Finishes</p>
+                        </div>
+                        <!-- ... Add more badges here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Running Groups Section -->
+        <div class="bg-white rounded-xl shadow-xl p-6 mb-8 border-t-4 border-runner-green">
+            <h2 class="text-xl font-bold text-runner-green mb-4">Running Groups & Affiliations</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Group 1 -->
+                <div class="p-3 bg-gray-50 rounded-lg border-l-4 border-runner-green">
+                    <p class="font-semibold text-gray-800">The Marathon Maniacs</p>
+                    <p class="text-sm text-gray-600">Current Member (Since 2020)</p>
+                    <a href="https://www.marathonmaniacs.com" target="_blank" class="text-xs text-blue-600 hover:text-blue-800 font-medium transition duration-150">Visit Group Website &rarr;</a>
+                </div>
+                <!-- Group 2 -->
+                <div class="p-3 bg-gray-50 rounded-lg border-l-4 border-runner-green">
+                    <p class="font-semibold text-gray-800">Boston Road Runners</p>
+                    <p class="text-sm text-gray-600">Historical Member (2018 - 2021)</p>
+                    <a href="https://www.bostonrr.org" target="_blank" class="text-xs text-blue-600 hover:text-blue-800 font-medium transition duration-150">Visit Group Website &rarr;</a>
+                </div>
+                 <!-- Group 3 -->
+                <div class="p-3 bg-gray-50 rounded-lg border-l-4 border-runner-green">
+                    <p class="font-semibold text-gray-800">Ultra Trail Association</p>
+                    <p class="text-sm text-gray-600">Current Member (Since 2022)</p>
+                    <a href="https://www.ultratrail.com" target="_blank" class="text-xs text-blue-600 hover:text-blue-800 font-medium transition duration-150">Visit Group Website &rarr;</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Race History Grid -->
+        <div class="bg-white rounded-xl shadow-xl p-6">
+            <h2 class="text-xl font-bold text-runner-maroon mb-4">Official Race Log (Sanctioned Events)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                <!-- Race Card 1: New York City Marathon -->
+                <div class="race-card bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-bold text-runner-maroon hover:underline">
+                             <a href="#" class="text-runner-maroon">NYC Marathon (2023)</a>
+                        </h3>
+                        <!-- Link to Event Page (Placeholder for next step) -->
+                        <a href="#" title="View Event Page Results" class="text-xs font-semibold text-runner-green hover:underline">
+                            View Splits &rarr;
+                        </a>
+                    </div>
+                    <p class="text-sm text-gray-700 mt-1">Distance: <span class="font-semibold">42.2K</span> | Final Time: <span class="font-semibold">3:05:12</span></p>
+                    <p class="text-sm text-gray-500 flex items-center mt-2">
+                        <svg class="w-4 h-4 mr-1 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                        New York, NY, USA
+                    </p>
+                    <a href="https://www.nycmarathon.org" target="_blank" class="text-xs text-blue-600 hover:text-blue-800 font-medium mt-2 block">Official Race Website</a>
+                </div>
+
+                <!-- Race Card 2: 50K Ultra -->
+                <div class="race-card bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-bold text-runner-maroon hover:underline">
+                            <a href="#" class="text-runner-maroon">Coastal Trail 50K (2024)</a>
+                        </h3>
+                        <a href="#" title="View Event Page Results" class="text-xs font-semibold text-runner-green hover:underline">
+                            View Splits &rarr;
+                        </a>
+                    </div>
+                    <p class="text-sm text-gray-700 mt-1">Distance: <span class="font-semibold">50K</span> | Final Time: <span class="font-semibold">4:58:01</span></p>
+                    <p class="text-sm text-gray-500 flex items-center mt-2">
+                        <svg class="w-4 h-4 mr-1 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                        Big Sur, CA, USA
+                    </p>
+                    <a href="https://www.coastaltrailrun.com" target="_blank" class="text-xs text-blue-600 hover:text-blue-800 font-medium mt-2 block">Official Race Website</a>
+                </div>
+                
+                <!-- Race Card 3: 5K Race -->
+                 <div class="race-card bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-bold text-runner-maroon hover:underline">
+                             <a href="#" class="text-runner-maroon">Central Park 5K (2024)</a>
+                        </h3>
+                        <a href="#" title="View Event Page Results" class="text-xs font-semibold text-runner-green hover:underline">
+                            View Splits &rarr;
+                        </a>
+                    </div>
+                    <p class="text-sm text-gray-700 mt-1">Distance: <span class="font-semibold">5K</span> | Final Time: <span class="font-semibold">18:45</span></p>
+                    <p class="text-sm text-gray-500 flex items-center mt-2">
+                        <svg class="w-4 h-4 mr-1 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                        New York, NY, USA
+                    </p>
+                    <a href="https://www.nycruns.com" target="_blank" class="text-xs text-blue-600 hover:text-blue-800 font-medium mt-2 block">Official Race Website</a>
+                </div>
+
+                <!-- Placeholder for more races -->
+                 <div class="md:col-span-3 text-center py-4 text-gray-500 italic text-sm">
+                    -- Displaying 3 of 15 career races. Scroll down for more --
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-12 py-4 border-t border-gray-200 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-gray-500">
+            &copy; 2024 Global Runners Reference. All rights reserved. | Data sourced from official race organizations.
+        </div>
+    </footer>
+
+
+    <!-- Compare Modal Window (Hidden by Default) -->
+    <div id="compare-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex items-center justify-center hidden p-4" aria-modal="true" role="dialog">
+        <div class="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
+            <!-- Modal Header -->
+            <div class="p-6 border-b flex justify-between items-center bg-gray-50 rounded-t-xl">
+                <h2 class="text-2xl font-bold text-runner-maroon">Compare Runner Performance</h2>
+                <button onclick="document.getElementById('compare-modal').classList.add('hidden')" class="text-gray-500 hover:text-gray-900 transition duration-150">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Modal Body: Comparison Form and Graph -->
+            <div class="p-6">
+                <!-- Comparison Selection Form -->
+                <div class="mb-6 flex space-x-4">
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Runner 1 (You)</label>
+                        <input type="text" value="Jane Doe (Self)" disabled class="w-full p-2 border border-gray-300 bg-gray-100 rounded-lg text-sm" />
+                    </div>
+                    <div class="flex-1">
+                        <label for="runner2" class="block text-sm font-medium text-gray-700 mb-1">Runner 2 (To Compare)</label>
+                        <select id="runner2" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:border-runner-maroon">
+                            <option>Select Runner...</option>
+                            <option>Eliud Kipchoge (Verified)</option>
+                            <option selected>Another Runner</option>
+                            <option>Local Competitor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Comparison Graph and Key Findings -->
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Splits & Progress Gap (Marathon Example)</h3>
+
+                <div class="bg-gray-100 p-4 rounded-lg border border-gray-300 h-96 flex flex-col items-center justify-center">
+                    <!-- Graph Placeholder -->
+                    <p class="text-lg text-gray-500 mb-4">
+                        [Modal Window Graph Here]
+                    </p>
+                    <p class="text-center text-sm text-gray-600">
+                        This chart would visually plot **Pace (Y-axis)** against **Distance (X-axis)** for both runners.<br>
+                        The **gap** between the two lines illustrates the target training effort needed.
+                    </p>
+                </div>
+                
+                <!-- Key Insights -->
+                <div class="mt-4 p-4 bg-runner-gold bg-opacity-10 border-l-4 border-runner-gold rounded-r-lg">
+                    <p class="font-semibold text-gray-800">Key Insight:</p>
+                    <ul class="list-disc list-inside text-sm text-gray-700 mt-1 space-y-1">
+                        <li>You maintain a similar pace through 30K, but Runner 2 maintains better "kick" through the final 12K.</li>
+                        <li>Focus on long-run stamina and speed work for the final segment.</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="p-6 border-t bg-gray-50 flex justify-end rounded-b-xl">
+                 <button onclick="document.getElementById('compare-modal').classList.add('hidden')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition duration-150">
+                    Close Comparison
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
